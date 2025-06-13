@@ -1,6 +1,12 @@
 # My PHP & HTML Online Runner
+# PHP-HTML-Online-Runner
+Copyright © 2025 Hupan0210. All Rights Reserved.
 
-大家好，我是南来北往 (NanLaiBeiWang)。这个项目源于我一个简单的想法：我想创建一个属于自己的、部署在共享主机上、轻量级且功能强大的在线PHP运行环境。它无需复杂的后台或数据库，却能提供专业、流畅的开发体验。
+An online tool for running PHP and HTML code.
+...
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+这个项目源于我一个简单的想法：我想创建一个属于自己的、部署在共享主机上、轻量级且功能强大的在线PHP运行环境。它无需复杂的后台或数据库，却能提供专业、流畅的开发体验。
 
 经过不断的迭代和优化，现在它已经从一个简单的工具，成长为一个功能完善、性能卓越、安全可靠的专业平台。
 
