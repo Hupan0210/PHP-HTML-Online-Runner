@@ -1,0 +1,13 @@
+# =================================================================
+# 如果您发现了本站的任何安全漏洞，请通过以下方式联系我们，非常感谢！
+# If you discover any security vulnerabilities, please contact us. Thanks!
+# =================================================================
+
+# 联系方式 (邮箱)
+Contact: mailto:admin@112583.xyz
+
+# 此文件的有效期
+Expires: 2026-06-12T18:00:00.000Z
+
+# 推荐使用的联系语言
+Preferred-Languages: zh, en

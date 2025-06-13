@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线PHP代码运行工具 | PHP & HTML Sandbox实时预览</title>
+    <meta name="description" content="一个免费、无需注册的在线PHP代码运行工具。实时运行和预览PHP、HTML混合代码，支持代码高亮、分享和格式化。是您学习、测试和调试PHP代码的理想沙箱(Sandbox)。">
+    <meta name="keywords" content="在线PHP, PHP运行, PHP工具, PHP Sandbox, HTML运行, 代码预览, PHP在线编辑器, CodeMirror, PHP Fiddle">
+    <link rel="canonical" href="https://nlbw.pp.ua/" />
+    
+    <script>
+      (function() {
+        const googleAnalyticsId = 'G-KEDZDT8J8R';
+        let gtagLoaded = false;
+
+        function loadGoogleAnalytics() {
+          if (gtagLoaded) return;
+          gtagLoaded = true;
+
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', googleAnalyticsId);
+          
+          console.log('Google Analytics loaded after user interaction.');
+          
+          // Remove listeners after firing
+          window.removeEventListener('scroll', loadGoogleAnalytics);
+          window.removeEventListener('mousemove', loadGoogleAnalytics);
+          window.removeEventListener('touchstart', loadGoogleAnalytics);
+        }
+
+        const options = { once: true, passive: true };
+        window.addEventListener('scroll', loadGoogleAnalytics, options);
+        window.addEventListener('mousemove', loadGoogleAnalytics, options);
+        window.addEventListener('touchstart', loadGoogleAnalytics, options);
+      })();
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "在线PHP代码运行工具 (PHP & HTML Online Runner)",
+      "description": "一个免费、无需注册的在线PHP代码运行工具，能够实时运行和预览PHP、HTML混合代码，是学习和测试PHP的理想沙箱。",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://nlbw.pp.ua/",
+      "creator": {
+        "@type": "Person",
+        "name": "NanLaiBeiWang"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&family=Inter:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&family=Inter:wght@400;700&display=swap"></noscript>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="#BB86FC">&lt;?&gt;</text></svg>
+            <span data-i18n-key="site_title_header">PHP & HTML Online Runner</span>
+        </div>
+        <div class="header-controls">
+            <div class="language-switcher">
+                <button id="lang-toggle-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0m4 -2h10m-7 4h7m-8 4h8"></path></svg>
+                    <span id="current-lang-text">EN</span>
+                </button>
+                <div id="lang-dropdown" class="lang-dropdown">
+                    <a href="?lang=en" data-lang="en">English (EN)</a>
+                    <a href="?lang=zh" data-lang="zh">简体中文 (ZH)</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="site-main">
+        <div class="tool-container">
+            <div class="panel editor-panel">
+                <form id="code-form" action="run.php" method="post" target="result-frame">
+                    <div class="cm-wrapper">
+                        <label for="code-editor" class="sr-only">PHP Code Editor</label>
+                        <textarea id="code-editor" name="code"></textarea>
+                    </div>
+                    
+                    <input type="hidden" id="lang-input" name="lang" value="en">
+
+                    <div class="editor-controls">
+                        <button type="button" id="share-btn" class="control-btn" data-i18n-key-title="tooltip_share" title="Share Code">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6l-4-4-4 4m4-4v13"/></svg>
+                            <span data-i18n-key="share_button">Share</span>
+                        </button>
+                         <button type="button" id="format-btn" class="control-btn" data-i18n-key-title="tooltip_format" title="Format Code">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9zM8 12h8m-4-4v8"/></svg>
+                            <span data-i18n-key="format_button">Format</span>
+                        </button>
+                        <div class="separator"></div>
+                        <button type="button" id="suggest-btn" class="control-btn" data-i18n-key-title="tooltip_suggest" title="Suggestions">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 13V9a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5m-1-10l7.5-7.5L21 6l-7.5 7.5L9 14z"/></svg>
+                            <span data-i18n-key="suggest_button">Suggestions</span>
+                        </button>
+                         <button type="button" id="clear-btn" class="control-btn" data-i18n-key-title="tooltip_clear" title="Clear Code">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2a2.5 2.5 0 0 0-2.5 2.5v15A2.5 2.5 0 0 0 2.5 22h19a2.5 2.5 0 0 0 2.5-2.5v-15A2.5 2.5 0 0 0 21.5 2H2.5zM2 9.5h20M9.5 16a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5z"/></svg>
+                            <span data-i18n-key="clear_button">Clear</span>
+                        </button>
+                        <div class="separator"></div>
+                        <button type="button" id="upload-btn" class="control-btn" data-i18n-key-title="tooltip_upload" title="Upload File">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m14-7l-5-5-5 5m5-5v12"/></svg>
+                            <span data-i18n-key="upload_button">Upload File</span>
+                        </button>
+                        <button type="button" id="download-btn" class="control-btn" data-i18n-key-title="tooltip_download" title="Download Code">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            <span data-i18n-key="download_button">Download Code</span>
+                        </button>
+                    </div>
+
+                    <button id="run-button" type="submit">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"></path></svg>
+                        <span data-i18n-key="run_button">Run Code</span>
+                    </button>
+                </form>
+            </div>
+            <div class="panel result-panel">
+                <div class="panel-header">
+                    <span data-i18n-key="result_panel_title">Web Result</span>
+                    <div class="device-controls">
+                        <button class="control-btn" data-device="desktop" data-i18n-key-title="tooltip_desktop" title="Desktop View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 3h20v14h-20zm6 18h8m-4-4v4"/></svg>
+                        </button>
+                        <button class="control-btn" data-device="tablet" data-i18n-key-title="tooltip_tablet" title="Tablet View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m8 16v.01"/></svg>
+                        </button>
+                        <button class="control-btn" data-device="phone" data-i18n-key-title="tooltip_phone" title="Phone View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 2h14a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m7 16v.01"/></svg>
+                        </button>
+                        <div class="separator"></div>
+                        <button class="control-btn" id="rotate-btn" data-i18n-key-title="tooltip_rotate" title="Rotate Screen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 4v6h6m16 10v-6h-6M20.49 9A9 9 0 0 0 7.2 4.24M3.51 15a9 9 0 0 0 13.29 4.76"/></svg>
+                        </button>
+                        <button class="control-btn" id="scale-btn" data-i18n-key-title="tooltip_scale" title="Fit to Screen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3v3a2 2 0 0 1-2 2H3m13 0h3a2 2 0 0 1 2-2V3m0 13v3a2 2 0 0 1-2 2h-3M8 21v-3a2 2 0 0 1-2-2H3"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="viewport-wrapper">
+                    <div class="loading-overlay" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="device-viewport"><iframe id="result-frame" name="result-frame" title="PHP code result" sandbox="allow-scripts"></iframe></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="site-footer"><p><span data-i18n-key="footer_copyright">&copy; 2025 PHP & HTML Online Runner.</span> <a href="https://112583.xyz/" target="_blank" rel="noopener noreferrer" data-i18n-key="footer_made_by">Made by NanLaiBeiWang</a></p></footer>
+    
+    <input type="file" id="file-uploader" accept=".php,.html,.htm,.txt" style="display: none;">
+
+    <div id="suggest-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+            <h3 data-i18n-key="modal_title">We Value Your Feedback!</h3>
+            <p data-i18n-key="modal_text">Have a suggestion or found a bug? Please let us know. You can send your feedback to the following email address:</p>
+            <div class="email-box">
+                <a id="modal-email-link" href="mailto:admin@112583.xyz">admin@112583.xyz</a>
+                <button id="modal-copy-btn" class="control-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span data-i18n-key="modal_copy_button">Copy</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/xml/xml.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/clike/clike.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/php/php.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" defer></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const translations = {
+            en: {
+                site_title_header: 'PHP & HTML Online Runner', run_button: 'Run Code', result_panel_title: 'Web Result',
+                tooltip_desktop: 'Desktop View', tooltip_tablet: 'Tablet View', tooltip_phone: 'Phone View',
+                tooltip_rotate: 'Rotate Screen', tooltip_scale: 'Fit to Screen',
+                footer_copyright: '© 2025 PHP & HTML Online Runner.', footer_made_by: 'Made by NanLaiBeiWang',
+                upload_button: 'Upload File', download_button: 'Download Code', clear_button: 'Clear', suggest_button: 'Suggestions',
+                share_button: 'Share', format_button: 'Format',
+                tooltip_upload: 'Upload File', tooltip_download: 'Download Code as .php', tooltip_clear: 'Reset to default code', tooltip_suggest: 'Send feedback or suggestions',
+                tooltip_share: 'Share code via link', tooltip_format: 'Format code with Prettier',
+                modal_title: 'We Value Your Feedback!', modal_text: 'Have a suggestion or found a bug? Please let us know. You can send your feedback to the following email address:',
+                modal_copy_button: 'Copy', modal_copy_success: 'Copied!',
+                share_link_copied: 'Link Copied!', format_error: 'Code formatting failed. Please check for syntax errors.',
+                default_code: `<?php\n// Welcome to the PHP & HTML Online Runner!\necho "PHP Version: <b>" . phpversion() . "</b>";\n?>\n\n<style>body{font-family: sans-serif; text-align:center; padding-top: 2rem;}</style>\n<h2>🚀 Ready to Go!</h2>\n<p>Try editing this code and hit 'Run'.</p>`
+            },
+            zh: {
+                site_title_header: 'PHP & HTML 在线运行工具', run_button: '运行代码', result_panel_title: '网页效果',
+                tooltip_desktop: '桌面视图', tooltip_tablet: '平板视图', tooltip_phone: '手机视图',
+                tooltip_rotate: '旋转屏幕', tooltip_scale: '适应屏幕',
+                footer_copyright: '© 2025 PHP & HTML 在线运行工具.', footer_made_by: '南来北往制作',
+                upload_button: '上传文件', download_button: '下载源码', clear_button: '清空', suggest_button: '建议',
+                share_button: '分享', format_button: '格式化',
+                tooltip_upload: '上传文件', tooltip_download: '将代码下载为 .php 文件', tooltip_clear: '清空代码并重置', tooltip_suggest: '发送反馈或功能建议',
+                tooltip_share: '通过链接分享代码', tooltip_format: '使用 Prettier 格式化代码',
+                modal_title: '我们重视您的反馈！', modal_text: '有任何建议或发现BUG？请告诉我们。您可以将反馈发送到以下邮箱地址：',
+                modal_copy_button: '复制', modal_copy_success: '已复制！',
+                share_link_copied: '链接已复制！', format_error: '代码格式化失败，请检查语法错误。',
+                default_code: `<?php\n// 欢迎使用 PHP & HTML 在线运行工具!\necho "PHP 版本: <b>" . phpversion() . "</b>";\n?>\n\n<style>body{font-family: sans-serif; text-align:center; padding-top: 2rem;}</style>\n<h2>🚀 准备就绪!</h2>\n<p>试着编辑下面的代码，然后点击“运行”。</p>`
+            }
+        };
+
+        const editorEl = document.getElementById('code-editor');
+        const formatBtn = document.getElementById('format-btn');
+        let currentLang = localStorage.getItem('language') || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+
+        const editor = CodeMirror.fromTextArea(editorEl, {
+            lineNumbers: true, mode: "php", theme: "dracula", lineWrapping: true,
+            matchBrackets: true, font: "'Fira Code', monospace", gutters: ["CodeMirror-linenumbers"],
+        });
+
+        // The rest of the script logic remains the same as the previous version...
+        const langToggleBtn = document.getElementById('lang-toggle-btn');
+        const langDropdown = document.getElementById('lang-dropdown');
+        const currentLangText = document.getElementById('current-lang-text');
+        const langInput = document.getElementById('lang-input');
+        const deviceControls = document.querySelector('.device-controls');
+        const viewport = document.getElementById('device-viewport');
+        const viewportWrapper = document.querySelector('.viewport-wrapper');
+        const scaleBtn = document.getElementById('scale-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const fileUploader = document.getElementById('file-uploader');
+        const codeForm = document.getElementById('code-form');
+        const resultFrame = document.getElementById('result-frame');
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const clearBtn = document.getElementById('clear-btn');
+        const suggestBtn = document.getElementById('suggest-btn');
+        const suggestModal = document.getElementById('suggest-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalCopyBtn = document.getElementById('modal-copy-btn');
+        const shareBtn = document.getElementById('share-btn');
+        
+        const debounce = (func, delay) => { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), delay); }; };
+        const showTemporaryMessage = (element, message, duration = 2000) => { const originalText = element.innerHTML; element.innerHTML = message; setTimeout(() => { element.innerHTML = originalText; }, duration); };
+        const setLanguage = (lang) => {
+            currentLang = lang; localStorage.setItem('language', lang); document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'; currentLangText.textContent = lang.toUpperCase(); langInput.value = lang;
+            document.querySelectorAll('[data-i18n-key]').forEach(el => { const key = el.dataset.i18nKey; if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key]; });
+            document.querySelectorAll('[data-i18n-key-title]').forEach(el => { const key = el.dataset.i18nKeyTitle; if (translations[lang] && translations[lang][key]) el.title = translations[lang][key]; });
+            const hash = window.location.hash.slice(1);
+            if (hash) { try { const decompressed = LZString.decompressFromEncodedURIComponent(hash); if (decompressed) { editor.setValue(decompressed); history.replaceState(null, null, ' '); return; } } catch(e) { console.error("Failed to decompress from hash", e); } }
+            const savedCode = localStorage.getItem('savedCode');
+            if (savedCode) { editor.setValue(savedCode); } else { editor.setValue(translations[lang].default_code); }
+        };
+        let scaleTimeout; function updateDynamicScale() { if (!scaleBtn.classList.contains('active')) { viewport.style.transform = 'none'; return; } setTimeout(() => { const wrapperWidth = viewportWrapper.clientWidth; const wrapperHeight = viewportWrapper.clientHeight; const viewportWidth = viewport.offsetWidth; const viewportHeight = viewport.offsetHeight; if (viewportWidth === 0 || viewportHeight === 0) return; const scale = Math.min((wrapperWidth - 32) / viewportWidth, (wrapperHeight - 32) / viewportHeight, 1); viewport.style.transform = `scale(${scale})`; }, 50); }
+        deviceControls.addEventListener('click', (e) => { const button = e.target.closest('.control-btn'); if (!button) return; if (button.id === 'scale-btn') { button.classList.toggle('active'); } else if (button.id === 'rotate-btn') { viewport.classList.toggle('is-landscape'); } else if (button.dataset.device) { deviceControls.querySelectorAll('[data-device]').forEach(btn => btn.classList.remove('active')); button.classList.add('active'); const device = button.dataset.device; const wasLandscape = viewport.classList.contains('is-landscape'); viewport.className = 'device-viewport'; if (wasLandscape) viewport.classList.add('is-landscape'); viewport.classList.add(`device-${device}`); } updateDynamicScale(); });
+        window.addEventListener('resize', () => { clearTimeout(scaleTimeout); scaleTimeout = setTimeout(updateDynamicScale, 150); });
+        codeForm.addEventListener('submit', () => { editor.save(); loadingOverlay.style.display = 'flex'; });
+        resultFrame.addEventListener('load', () => { loadingOverlay.style.display = 'none'; });
+        langToggleBtn.addEventListener('click', () => langDropdown.classList.toggle('show'));
+        window.addEventListener('click', (e) => { if (!langToggleBtn.contains(e.target)) langDropdown.classList.remove('show'); });
+        langDropdown.addEventListener('click', (e) => { e.preventDefault(); const lang = e.target.dataset.lang; if (lang) { const currentCode = editor.getValue(); setLanguage(lang); editor.setValue(currentCode); } langDropdown.classList.remove('show'); });
+        uploadBtn.addEventListener('click', () => fileUploader.click());
+        fileUploader.addEventListener('change', (event) => { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => editor.setValue(e.target.result); reader.onerror = () => alert('Error reading file.'); reader.readAsText(file); event.target.value = ''; });
+        downloadBtn.addEventListener('click', () => { const content = editor.getValue(); const blob = new Blob([content], { type: 'application/x-php' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'code.php'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); });
+        editor.on('change', debounce(() => { localStorage.setItem('savedCode', editor.getValue()); }, 500));
+        clearBtn.addEventListener('click', () => { if (confirm(currentLang === 'zh' ? '确定要清空编辑器并恢复到默认代码吗？' : 'Are you sure you want to clear the editor and reset to default code?')) { localStorage.removeItem('savedCode'); window.location.hash = ''; editor.setValue(translations[currentLang].default_code); } });
+        suggestBtn.addEventListener('click', () => { suggestModal.style.display = 'flex'; });
+        const closeModal = () => { suggestModal.style.display = 'none'; };
+        modalCloseBtn.addEventListener('click', closeModal);
+        suggestModal.addEventListener('click', (e) => { if (e.target === suggestModal) closeModal(); });
+        modalCopyBtn.addEventListener('click', () => { navigator.clipboard.writeText('admin@112583.xyz').then(() => { showTemporaryMessage(modalCopyBtn.querySelector('span'), translations[currentLang].modal_copy_success); }); });
+        shareBtn.addEventListener('click', () => { const code = editor.getValue(); const compressed = LZString.compressToEncodedURIComponent(code); const url = new URL(window.location); url.hash = compressed; navigator.clipboard.writeText(url.href).then(() => { showTemporaryMessage(shareBtn.querySelector('span'), translations[currentLang].share_link_copied); }); });
+        
+        const loadScript = (src) => { return new Promise((resolve, reject) => { const script = document.createElement('script'); script.src = src; script.defer = true; script.onload = () => resolve(script); script.onerror = () => reject(new Error(`Script load error for ${src}`)); document.body.appendChild(script); }); };
+        const setupPrettier = () => {
+            formatBtn.addEventListener('click', () => {
+                try {
+                    const formatted = prettier.format(editor.getValue(), { parser: "php", plugins: prettierPlugins, phpVersion: "8.0", printWidth: 100, tabWidth: 4, singleQuote: true });
+                    editor.setValue(formatted);
+                } catch (error) { console.error("Prettier formatting error:", error); alert(translations[currentLang].format_error); }
+            });
+        };
+        if (window.innerWidth >= 768) {
+            loadScript('https://unpkg.com/prettier@2.8.8/standalone.js')
+                .then(() => loadScript('https://unpkg.com/@prettier/plugin-php@0.22.2/standalone.js'))
+                .then(() => { console.log('Prettier and PHP plugin loaded successfully.'); setupPrettier(); })
+                .catch(error => console.error(error));
+        } else {
+            formatBtn.style.display = 'none';
+        }
+
+        setLanguage(currentLang);
+        document.querySelector('.control-btn[data-device="desktop"]').click();
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# 指定规则适用于所有爬虫
+User-agent: *
+
+# 允许爬虫访问所有内容
+Allow: /
+
+# 禁止爬虫访问PHP执行脚本和临时文件夹
+Disallow: /run.php
+Disallow: /temp/
+
+# 告诉爬虫站点地图的位置
+Sitemap: https://nlbw.pp.ua/sitemap.xml
