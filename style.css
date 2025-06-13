@@ -198,6 +198,11 @@ body {
     .panel { height: auto; }
     .editor-panel { height: 60vh; }
     .result-panel { height: 80vh; }
+    
+    /* Mobile Layout Fix for Run Button */
+    .cm-wrapper {
+        min-height: 250px;
+    }
 }
 
 /* Accessibility Fix: Increase comment contrast */
