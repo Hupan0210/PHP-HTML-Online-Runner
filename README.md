@@ -6,7 +6,10 @@ An online tool for running PHP and HTML code.
 ...
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-这个项目源于我一个简单的想法：我想创建一个属于自己的、部署在共享主机上、轻量级且功能强大的在线PHP运行环境。它无需复杂的后台或数据库，却能提供专业、流畅的开发体验。
+
+这个项目源于我一个简单的想法：我想创建一个属于自己的、部署在共享主机上、轻量级且功能强大的在线PHP运行环境。
+
+它无需复杂的后台或数据库，却能提供专业、流畅的开发体验。
 
 经过不断的迭代和优化，现在它已经从一个简单的工具，成长为一个功能完善、性能卓越、安全可靠的专业平台。
 
@@ -102,7 +105,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ❤️ 致谢
 
-感谢您关注我的这个个人项目。从一个简单的想法到功能完善的工具，再到极致的性能优化，这段旅程让我学到了很多。
+感谢您关注我的这个个人项目。
+
+从一个简单的想法到功能完善的工具，再到极致的性能优化，这段旅程让我学到了很多。
 
 如果您有任何建议或发现了问题，欢迎通过[功能建议]按钮与我联系，或者在GitHub上提出Issue。
 
