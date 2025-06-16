@@ -105,7 +105,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ❤️ 致谢
 
-感谢您关注我的这个个人项目。
+ 感谢您关注我的这个个人项目。
 
 从一个简单的想法到功能完善的工具，再到极致的性能优化，这段旅程让我学到了很多。
 
